@@ -30,8 +30,7 @@ export function LikertItem(props: {
 	onNoteOpenChange: (open: boolean) => void;
 }) {
 	const options = props.scale === "frequency" ? FREQUENCY : AGREEMENT;
-	const value =
-		typeof props.value === "number" ? String(props.value) : undefined;
+	const value = typeof props.value === "number" ? String(props.value) : "";
 
 	return (
 		<div className="space-y-4">
