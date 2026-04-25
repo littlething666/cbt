@@ -30,6 +30,13 @@ if [ $build_exit -ne 0 ]; then
   errors="Compile check failed:\n$build_output"
 fi
 
+# Run production build and capture output
+build_output=$(npm run build 2>&1)
+build_exit=$?
+if [ $build_exit -ne 0 ]; then
+  errors="Build failed:\n$build_output"
+fi
+
 # Run unit tests and capture output
 test_output=$(npm run test:unit:run 2>&1)
 test_exit=$?

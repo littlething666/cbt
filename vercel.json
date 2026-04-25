@@ -1,11 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "functions": {
-    "app/actions/analyze.ts": {
-      "runtime": "edge"
-    }
-  },
   "headers": [
     {
       "source": "/(quiz)/result",
