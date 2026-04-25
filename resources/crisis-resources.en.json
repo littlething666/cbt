@@ -1,0 +1,13 @@
+{
+  "locale": "en",
+  "message": "If you are in immediate danger or thinking of suicide or self-harm, please reach out for help right now. Free, confidential crisis lines are available worldwide.",
+  "findHelpUrl": "https://findahelpline.com",
+  "international": [
+    { "region": "Worldwide directory", "name": "Find A Helpline", "url": "https://findahelpline.com" },
+    { "region": "United States", "name": "988 Suicide & Crisis Lifeline", "contact": "Call or text 988" },
+    { "region": "United Kingdom & Ireland", "name": "Samaritans", "contact": "Call 116 123" },
+    { "region": "Canada", "name": "Talk Suicide Canada", "contact": "Call 1-833-456-4566 or text 45645" },
+    { "region": "Australia", "name": "Lifeline Australia", "contact": "Call 13 11 14" },
+    { "region": "European Union", "name": "112", "contact": "Call 112 (general emergency)" }
+  ]
+}
