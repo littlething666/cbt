@@ -1,32 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export function FreeTextItem(props: {
 	id: string;
 	value: string;
+	open: boolean;
+	onOpenChange: (open: boolean) => void;
 	onChange: (v: string) => void;
 }) {
-	const [open, setOpen] = useState(props.value.length > 0);
 	return (
-		<div className="text-xs">
-			<button
-				type="button"
-				onClick={() => setOpen((v) => !v)}
-				className="opacity-70 underline-offset-2 hover:underline"
-			>
-				{open ? "Hide note" : "Add a note (optional)"}
-			</button>
-			{open ? (
+		<Collapsible
+			open={props.open}
+			onOpenChange={props.onOpenChange}
+			className="text-sm"
+		>
+			<CollapsibleTrigger className="text-muted-foreground underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none">
+				{props.open ? "Hide note" : "Add a note (optional)"}
+			</CollapsibleTrigger>
+			<CollapsibleContent className="pt-2">
 				<textarea
 					id={`note-${props.id}`}
-					rows={2}
+					rows={3}
 					value={props.value}
 					onChange={(e) => props.onChange(e.target.value)}
 					placeholder="In your own words…"
-					className="mt-2 w-full resize-y rounded-md border border-black/15 dark:border-white/15 bg-transparent px-2 py-1.5 text-xs"
+					className="w-full resize-y rounded-md border border-border bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
 				/>
-			) : null}
-		</div>
+			</CollapsibleContent>
+		</Collapsible>
 	);
 }
