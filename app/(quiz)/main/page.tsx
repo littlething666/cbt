@@ -6,7 +6,7 @@ import indicators from "@/resources/indicators.en.json";
 import { LikertItem } from "@/components/quiz/LikertItem";
 import { Controls } from "@/components/quiz/Controls";
 import { score } from "@/lib/engine/score";
-import { applySafetyBackstop, isCrisis } from "@/lib/engine/safety";
+import { isCrisis } from "@/lib/engine/safety";
 import { CrisisScreen } from "@/components/safety/CrisisScreen";
 import { analyze } from "@/app/actions/analyze";
 import { saveLatestSlot } from "@/lib/storage/latestSlot";
@@ -49,8 +49,7 @@ export default function MainQuizPage() {
 			return;
 		}
 		setSubmitting(true);
-		const narrative = await analyze({ facts, answers: combined, notes: combinedNotes });
-		const final = applySafetyBackstop(facts, narrative);
+		const final = await analyze({ facts, answers: combined, notes: combinedNotes });
 		saveLatestSlot(final);
 		router.push("/result");
 	}

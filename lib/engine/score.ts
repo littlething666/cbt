@@ -77,7 +77,7 @@ export function score(
 	const distortionStrengths: Record<string, DistortionStrength> = {};
 	for (const [k, vs] of byDistortion) {
 		const mean = vs.reduce((a, b) => a + b, 0) / vs.length;
-		distortionStrengths[k] = mean >= 3.5 ? "high" : mean >= 2.5 ? "moderate" : "low";
+		distortionStrengths[k] = mean >= 3.5 ? "high" : mean > 2.5 ? "moderate" : "low";
 	}
 
 	const phq9_9_raw = answers.phq9_9 ?? 0;

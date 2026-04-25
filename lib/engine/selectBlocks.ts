@@ -5,6 +5,6 @@ export function selectBlocks(answers: Record<string, number>): string[] {
 	const blocks: string[] = [];
 	if (d >= 3) blocks.push("depression");
 	if (a >= 3) blocks.push("anxiety");
-	if (blocks.length > 0) blocks.push("distortions");
+	blocks.push("distortions");
 	return blocks;
 }

@@ -2,17 +2,17 @@
 
 import type { DeterministicFacts } from "@/lib/engine/score";
 import { callOpenRouter } from "@/lib/analyst/openrouter";
+import { applySafetyBackstop } from "@/lib/engine/safety";
 import { buildSystemPrompt, buildUserPrompt } from "@/lib/analyst/prompts";
-import type { Narrative } from "@/lib/analyst/schema";
-
-export const runtime = "edge";
+import type { Result } from "@/lib/storage/latestSlot";
 
 export async function analyze(args: {
 	facts: DeterministicFacts;
 	answers: Record<string, number>;
 	notes: Record<string, string>;
-}): Promise<Narrative | null> {
+}): Promise<Result> {
 	const system = buildSystemPrompt();
 	const user = buildUserPrompt(args);
-	return callOpenRouter({ system, user });
+	const narrative = await callOpenRouter({ system, user });
+	return applySafetyBackstop(args.facts, narrative);
 }
