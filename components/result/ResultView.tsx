@@ -3,6 +3,12 @@
 import { pdf } from "@react-pdf/renderer";
 import { ResultPDF } from "./ResultPDF";
 import type { Result } from "@/lib/storage/latestSlot";
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 
 export function ResultView({ result }: { result: Result }) {
 	async function downloadPdf() {
@@ -49,32 +55,42 @@ export function ResultView({ result }: { result: Result }) {
 				</section>
 			)}
 
-			<section className="space-y-2">
-				<h2 className="font-medium">Scores</h2>
-				<ul className="text-sm space-y-1">
-					{result.scores.phq9 != null ? (
-						<li>
-							PHQ-9: <span className="font-medium">{result.scores.phq9}</span> ({result.severities.depression})
-						</li>
-					) : null}
-					{result.scores.gad7 != null ? (
-						<li>
-							GAD-7: <span className="font-medium">{result.scores.gad7}</span> ({result.severities.anxiety})
-						</li>
-					) : null}
-				</ul>
-			</section>
+			<Card>
+				<CardHeader>
+					<CardTitle>Scores</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<ul className="text-sm space-y-1">
+						{result.scores.phq9 != null ? (
+							<li>
+								PHQ-9: <span className="font-medium">{result.scores.phq9}</span> (
+								{result.severities.depression})
+							</li>
+						) : null}
+						{result.scores.gad7 != null ? (
+							<li>
+								GAD-7: <span className="font-medium">{result.scores.gad7}</span> (
+								{result.severities.anxiety})
+							</li>
+						) : null}
+					</ul>
+				</CardContent>
+			</Card>
 
-			<section className="space-y-2">
-				<h2 className="font-medium">Cognitive distortion strengths</h2>
-				<ul className="text-sm space-y-1">
-					{Object.entries(result.distortionStrengths).map(([k, v]) => (
-						<li key={k}>
-							{k}: <span className="font-medium">{v}</span>
-						</li>
-					))}
-				</ul>
-			</section>
+			<Card>
+				<CardHeader>
+					<CardTitle>Cognitive distortion strengths</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<ul className="text-sm space-y-1">
+						{Object.entries(result.distortionStrengths).map(([k, v]) => (
+							<li key={k}>
+								{k}: <span className="font-medium">{v}</span>
+							</li>
+						))}
+					</ul>
+				</CardContent>
+			</Card>
 
 			<footer className="text-[11px] opacity-60">
 				PHQ-9 © Pfizer Inc., reproduced under their public-use statement. GAD-7 developed by

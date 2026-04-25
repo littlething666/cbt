@@ -2,11 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import indicators from "@/resources/indicators.en.json";
+import rawIndicators from "@/resources/indicators.en.json";
 import { QuizHeader } from "@/components/quiz/QuizHeader";
 import { QuizSlide, type Slide } from "@/components/quiz/QuizSlide";
 import { Controls } from "@/components/quiz/Controls";
 import { selectBlocks } from "@/lib/engine/selectBlocks";
+import type { IndicatorsConfig } from "@/lib/engine/types";
 
 type DiscoveryItem = {
 	id: string;
@@ -21,11 +22,13 @@ const AGREEMENT_STEM = "How much do you agree with this thought right now?";
 
 const AUTO_ADVANCE_DELAY_MS = 220;
 
+const indicators = rawIndicators as IndicatorsConfig;
+
 export default function DiscoveryPage() {
 	const router = useRouter();
 
 	const slides: Slide[] = useMemo(() => {
-		const items = (indicators.discovery as DiscoveryItem[]) ?? [];
+		const items = (indicators.discovery as DiscoveryItem[] | undefined) ?? [];
 		return items.map((it) => ({
 			id: it.id,
 			prompt: it.prompt,
@@ -43,9 +46,11 @@ export default function DiscoveryPage() {
 
 	if (slides.length === 0) return null;
 	const current = slides[index];
-	const value = answers[current.id];
-	const note = notes[current.id] ?? "";
-	const isOpen = !!noteOpen[current.id];
+	if (!current) return null;
+	const currentId = current.id;
+	const value = answers[currentId];
+	const note = notes[currentId] ?? "";
+	const isOpen = !!noteOpen[currentId];
 	const isLast = index === slides.length - 1;
 
 	function finish(finalAnswers: Record<string, number>) {
@@ -68,8 +73,8 @@ export default function DiscoveryPage() {
 	}
 
 	function onValueChange(v: number) {
-		setAnswers((s) => ({ ...s, [current.id]: v }));
-		const noteHasContent = (notes[current.id] ?? "").length > 0;
+		setAnswers((s) => ({ ...s, [currentId]: v }));
+		const noteHasContent = (notes[currentId] ?? "").length > 0;
 		if (!isOpen && !noteHasContent && !isLast) {
 			window.setTimeout(
 				() => setIndex((i) => i + 1),
@@ -88,10 +93,10 @@ export default function DiscoveryPage() {
 				noteOpen={isOpen}
 				onValueChange={onValueChange}
 				onNoteChange={(n) =>
-					setNotes((s) => ({ ...s, [current.id]: n }))
+					setNotes((s) => ({ ...s, [currentId]: n }))
 				}
 				onNoteOpenChange={(open) =>
-					setNoteOpen((s) => ({ ...s, [current.id]: open }))
+					setNoteOpen((s) => ({ ...s, [currentId]: open }))
 				}
 			/>
 			<Controls

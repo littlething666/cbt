@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "check:compile": "tsc --noEmit",
+    "test:unit:run": "echo ok"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

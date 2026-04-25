@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import indicators from "@/resources/indicators.en.json";
+import rawIndicators from "@/resources/indicators.en.json";
 import { QuizHeader } from "@/components/quiz/QuizHeader";
 import { QuizSlide, type Slide } from "@/components/quiz/QuizSlide";
 import { Controls } from "@/components/quiz/Controls";
@@ -12,6 +12,7 @@ import { isCrisis } from "@/lib/engine/safety";
 import { CrisisScreen } from "@/components/safety/CrisisScreen";
 import { analyze } from "@/app/actions/analyze";
 import { saveLatestSlot } from "@/lib/storage/latestSlot";
+import type { IndicatorsConfig } from "@/lib/engine/types";
 
 type MainItem = {
 	id: string;
@@ -30,6 +31,8 @@ type Discovery = {
 	notes: Record<string, string>;
 	blocks: string[];
 };
+
+const indicators = rawIndicators as IndicatorsConfig;
 
 const FREQUENCY_STEM =
 	"Over the last 2 weeks, how often have you been bothered by…";
@@ -88,11 +91,9 @@ export default function MainQuizPage() {
 	async function runAnalyze(currentDiscovery: Discovery) {
 		const combined = { ...currentDiscovery.answers, ...answers };
 		const combinedNotes = { ...currentDiscovery.notes, ...notes };
-		const facts = score(combined, indicators);
 		setAnalyzing(true);
 		try {
 			const final = await analyze({
-				facts,
 				answers: combined,
 				notes: combinedNotes,
 			});
@@ -117,9 +118,10 @@ export default function MainQuizPage() {
 
 	const current = slides[index];
 	if (!current) return null;
-	const value = answers[current.id];
-	const note = notes[current.id] ?? "";
-	const isOpen = !!noteOpen[current.id];
+	const currentId = current.id;
+	const value = answers[currentId];
+	const note = notes[currentId] ?? "";
+	const isOpen = !!noteOpen[currentId];
 	const isLast = index === slides.length - 1;
 
 	function back() {
@@ -141,8 +143,8 @@ export default function MainQuizPage() {
 	}
 
 	function onValueChange(v: number) {
-		setAnswers((s) => ({ ...s, [current.id]: v }));
-		const noteHasContent = (notes[current.id] ?? "").length > 0;
+		setAnswers((s) => ({ ...s, [currentId]: v }));
+		const noteHasContent = (notes[currentId] ?? "").length > 0;
 		if (!isOpen && !noteHasContent && !isLast) {
 			window.setTimeout(
 				() => setIndex((i) => i + 1),
@@ -161,10 +163,10 @@ export default function MainQuizPage() {
 				noteOpen={isOpen}
 				onValueChange={onValueChange}
 				onNoteChange={(n) =>
-					setNotes((s) => ({ ...s, [current.id]: n }))
+					setNotes((s) => ({ ...s, [currentId]: n }))
 				}
 				onNoteOpenChange={(open) =>
-					setNoteOpen((s) => ({ ...s, [current.id]: open }))
+					setNoteOpen((s) => ({ ...s, [currentId]: open }))
 				}
 			/>
 			<Controls
