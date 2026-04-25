@@ -1,0 +1,68 @@
+{
+  "version": "1.0.0",
+  "locale": "en",
+  "discovery": [
+    { "id": "phq2_1", "prompt": "Little interest or pleasure in doing things", "scale": "frequency", "routes": ["depression"] },
+    { "id": "phq2_2", "prompt": "Feeling down, depressed, or hopeless", "scale": "frequency", "routes": ["depression"] },
+    { "id": "gad2_1", "prompt": "Feeling nervous, anxious, or on edge", "scale": "frequency", "routes": ["anxiety"] },
+    { "id": "gad2_2", "prompt": "Not being able to stop or control worrying", "scale": "frequency", "routes": ["anxiety"] }
+  ],
+  "blocks": {
+    "depression": {
+      "label": "Depression (PHQ-9)",
+      "scale": "frequency",
+      "items": [
+        { "id": "phq9_1", "prompt": "Little interest or pleasure in doing things" },
+        { "id": "phq9_2", "prompt": "Feeling down, depressed, or hopeless" },
+        { "id": "phq9_3", "prompt": "Trouble falling or staying asleep, or sleeping too much" },
+        { "id": "phq9_4", "prompt": "Feeling tired or having little energy" },
+        { "id": "phq9_5", "prompt": "Poor appetite or overeating" },
+        { "id": "phq9_6", "prompt": "Feeling bad about yourself, or that you are a failure or have let yourself or your family down" },
+        { "id": "phq9_7", "prompt": "Trouble concentrating on things, such as reading the newspaper or watching television" },
+        { "id": "phq9_8", "prompt": "Moving or speaking so slowly that other people could have noticed, or being so fidgety or restless that you have been moving around a lot more than usual" },
+        { "id": "phq9_9", "prompt": "Thoughts that you would be better off dead, or of hurting yourself in some way", "safety": true }
+      ],
+      "cutoffs": { "mild": 5, "moderate": 10, "moderatelySevere": 15, "severe": 20 }
+    },
+    "anxiety": {
+      "label": "Anxiety (GAD-7)",
+      "scale": "frequency",
+      "items": [
+        { "id": "gad7_1", "prompt": "Feeling nervous, anxious, or on edge" },
+        { "id": "gad7_2", "prompt": "Not being able to stop or control worrying" },
+        { "id": "gad7_3", "prompt": "Worrying too much about different things" },
+        { "id": "gad7_4", "prompt": "Trouble relaxing" },
+        { "id": "gad7_5", "prompt": "Being so restless that it is hard to sit still" },
+        { "id": "gad7_6", "prompt": "Becoming easily annoyed or irritable" },
+        { "id": "gad7_7", "prompt": "Feeling afraid as if something awful might happen" }
+      ],
+      "cutoffs": { "mild": 5, "moderate": 10, "severe": 15 }
+    },
+    "distortions": {
+      "label": "Cognitive distortions",
+      "scale": "agreement",
+      "items": [
+        { "id": "dist_aon_1", "prompt": "If I'm not great at something, I'm bad at it — there's no in-between for me.", "distortion": "all_or_nothing" },
+        { "id": "dist_aon_2", "prompt": "Either I do this perfectly or there's no point doing it at all.", "distortion": "all_or_nothing" },
+        { "id": "dist_cat_1", "prompt": "When something goes wrong, I assume the worst possible outcome will follow.", "distortion": "catastrophizing" },
+        { "id": "dist_cat_2", "prompt": "If this small problem doesn't get fixed, my whole life will start to fall apart.", "distortion": "catastrophizing" },
+        { "id": "dist_ovg_1", "prompt": "When one thing goes badly, I take it as proof that everything will go badly.", "distortion": "overgeneralization" },
+        { "id": "dist_ovg_2", "prompt": "Whenever I try something new, it usually ends up not working out for me.", "distortion": "overgeneralization" },
+        { "id": "dist_mfl_1", "prompt": "I focus on what went wrong and barely notice what went well.", "distortion": "mental_filter" },
+        { "id": "dist_mfl_2", "prompt": "Even on a good day, the one bad moment is what stays with me.", "distortion": "mental_filter" },
+        { "id": "dist_dqp_1", "prompt": "When something good happens, I tell myself it doesn't really count.", "distortion": "disqualifying_positive" },
+        { "id": "dist_dqp_2", "prompt": "When people compliment me, they're just being polite — they don't really mean it.", "distortion": "disqualifying_positive" },
+        { "id": "dist_jtc_1", "prompt": "I often assume I know what other people are thinking about me, even without evidence.", "distortion": "jumping_to_conclusions" },
+        { "id": "dist_jtc_2", "prompt": "I can usually tell things will go badly before they've even started.", "distortion": "jumping_to_conclusions" },
+        { "id": "dist_mag_1", "prompt": "I treat my mistakes as huge and my achievements as small.", "distortion": "magnification_minimization" },
+        { "id": "dist_mag_2", "prompt": "My problems feel bigger than other people's, and my wins feel smaller.", "distortion": "magnification_minimization" },
+        { "id": "dist_emo_1", "prompt": "If I feel a certain way about myself, I take that feeling as proof it's true.", "distortion": "emotional_reasoning" },
+        { "id": "dist_emo_2", "prompt": "When I feel overwhelmed, that means the situation really is hopeless.", "distortion": "emotional_reasoning" },
+        { "id": "dist_shd_1", "prompt": "I tell myself I should or must do things, and feel guilty when I fall short.", "distortion": "should_statements" },
+        { "id": "dist_shd_2", "prompt": "Other people should behave the way I think is right, and it bothers me when they don't.", "distortion": "should_statements" },
+        { "id": "dist_per_1", "prompt": "When something bad happens around me, I assume it's somehow my fault.", "distortion": "personalization" },
+        { "id": "dist_per_2", "prompt": "When a friend or partner is in a bad mood, it's probably because of me.", "distortion": "personalization" }
+      ]
+    }
+  }
+}
