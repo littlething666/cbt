@@ -12,6 +12,7 @@ import { isCrisis } from "@/lib/engine/safety";
 import { CrisisScreen } from "@/components/safety/CrisisScreen";
 import { analyze } from "@/app/actions/analyze";
 import { saveLatestSlot } from "@/lib/storage/latestSlot";
+import { useAutoAdvanceTimer } from "@/lib/hooks/useAutoAdvanceTimer";
 import type { IndicatorsConfig } from "@/lib/engine/types";
 
 type MainItem = {
@@ -39,7 +40,6 @@ const FREQUENCY_STEM =
 const AGREEMENT_STEM = "How much do you agree with this thought right now?";
 
 const AUTO_ADVANCE_DELAY_MS = 220;
-
 export default function MainQuizPage() {
 	const router = useRouter();
 	const [discovery, setDiscovery] = useState<Discovery | null>(null);
@@ -49,6 +49,8 @@ export default function MainQuizPage() {
 	const [noteOpen, setNoteOpen] = useState<Record<string, boolean>>({});
 	const [crisis, setCrisis] = useState(false);
 	const [analyzing, setAnalyzing] = useState(false);
+	const { scheduleAutoAdvance, clearAutoAdvanceTimer } = useAutoAdvanceTimer();
+
 
 	useEffect(() => {
 		const raw = sessionStorage.getItem("cbt:discovery");
@@ -125,11 +127,13 @@ export default function MainQuizPage() {
 	const isLast = index === slides.length - 1;
 
 	function back() {
+		clearAutoAdvanceTimer();
 		setIndex((i) => Math.max(0, i - 1));
 	}
 
 	async function onContinue() {
 		if (!isLast) {
+			clearAutoAdvanceTimer();
 			setIndex((i) => i + 1);
 			return;
 		}
@@ -143,13 +147,11 @@ export default function MainQuizPage() {
 	}
 
 	function onValueChange(v: number) {
+		clearAutoAdvanceTimer();
 		setAnswers((s) => ({ ...s, [currentId]: v }));
 		const noteHasContent = (notes[currentId] ?? "").length > 0;
 		if (!isOpen && !noteHasContent && !isLast) {
-			window.setTimeout(
-				() => setIndex((i) => i + 1),
-				AUTO_ADVANCE_DELAY_MS,
-			);
+			scheduleAutoAdvance(() => setIndex((i) => i + 1), AUTO_ADVANCE_DELAY_MS);
 		}
 	}
 

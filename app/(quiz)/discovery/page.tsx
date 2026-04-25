@@ -7,6 +7,7 @@ import { QuizHeader } from "@/components/quiz/QuizHeader";
 import { QuizSlide, type Slide } from "@/components/quiz/QuizSlide";
 import { Controls } from "@/components/quiz/Controls";
 import { selectBlocks } from "@/lib/engine/selectBlocks";
+import { useAutoAdvanceTimer } from "@/lib/hooks/useAutoAdvanceTimer";
 import type { IndicatorsConfig } from "@/lib/engine/types";
 
 type DiscoveryItem = {
@@ -21,11 +22,11 @@ const FREQUENCY_STEM =
 const AGREEMENT_STEM = "How much do you agree with this thought right now?";
 
 const AUTO_ADVANCE_DELAY_MS = 220;
-
 const indicators = rawIndicators as IndicatorsConfig;
 
 export default function DiscoveryPage() {
 	const router = useRouter();
+	const { scheduleAutoAdvance, clearAutoAdvanceTimer } = useAutoAdvanceTimer();
 
 	const slides: Slide[] = useMemo(() => {
 		const items = (indicators.discovery as DiscoveryItem[] | undefined) ?? [];
@@ -43,7 +44,6 @@ export default function DiscoveryPage() {
 	const [answers, setAnswers] = useState<Record<string, number>>({});
 	const [notes, setNotes] = useState<Record<string, string>>({});
 	const [noteOpen, setNoteOpen] = useState<Record<string, boolean>>({});
-
 	if (slides.length === 0) return null;
 	const current = slides[index];
 	if (!current) return null;
@@ -64,22 +64,22 @@ export default function DiscoveryPage() {
 	}
 
 	function next() {
+		clearAutoAdvanceTimer();
 		if (isLast) finish(answers);
 		else setIndex((i) => i + 1);
 	}
 
 	function back() {
+		clearAutoAdvanceTimer();
 		setIndex((i) => Math.max(0, i - 1));
 	}
 
 	function onValueChange(v: number) {
+		clearAutoAdvanceTimer();
 		setAnswers((s) => ({ ...s, [currentId]: v }));
 		const noteHasContent = (notes[currentId] ?? "").length > 0;
 		if (!isOpen && !noteHasContent && !isLast) {
-			window.setTimeout(
-				() => setIndex((i) => i + 1),
-				AUTO_ADVANCE_DELAY_MS,
-			);
+			scheduleAutoAdvance(() => setIndex((i) => i + 1), AUTO_ADVANCE_DELAY_MS);
 		}
 	}
 
